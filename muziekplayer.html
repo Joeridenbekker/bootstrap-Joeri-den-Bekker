@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="images/Guitar.ico">
+  <title>Journey Through Rock</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="Main.css" rel="stylesheet"/>
+  <script src="jquery-1.10.2.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-image: url("images/background.jpg");
+      background-color: #f2f2f2;
+      padding: 25px;
+      position: fixed;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Journey Through Rock</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li class="active"><a href="#">Muziekplayer</a></li>
+        <li><a href="muzieklist.html">Muzieklijst</a></li>
+        <li><a href="video.html">Video</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<div id="bg">
+    <div id="blackLayer"></div>
+    <img src="muziekplayerimage/whitestripeswall.jpg"/>
+</div>
+
+<div id="main">
+    <div id="image">
+        <img src="muziekplayerimage/whitestripeswall.jpg"/>
+    </div>
+    <div id="player">
+        <div id="songTitle">Demo</div>
+        <div id="buttons">
+            <button id="pre" onclick="pre()"><img src="muziekplayericons/Pre.png" height="90%" width="90%"/></button>
+            <button id="play" onclick="playOrPauseSong()"><img src="muziekplayericons/Pause.png"/></button>
+            <button id="next" onclick="next()"><img src="muziekplayericons/Next.png" height="90%" width="90%"/></button>
+        </div>
+
+        <div id="seek-bar">
+            <div id="fill"></div>
+            <div id="handle"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="container text-center">
+  <p><kbd>© 2018 Joeri den Bekker ALL RIGHTS RESERVED.</kbd></p>
+</footer>
+
+</body>
+
+<script type="text/javascript">
+
+    var songs = ["The-White-Stripes/Seven-Nation-Army.mp3","Red-Hot-Chili-Peppers/Cant-stop.mp3","Foo-Fighters/Monkey-Wrench.mp3"];
+    var poster = ["muziekplayerimage/whitestripeswall.jpg","muziekplayerimage/redhotwall.jpg","muziekplayerimage/foofighterswall.jpg"];
+
+    var songTitle = document.getElementById("songTitle");
+    var fillBar = document.getElementById("fill");
+
+    var song = new Audio();
+    var currentSong = 0;    // it point to the current song
+
+    window.onload = playSong;   // it will call the function playSong when window is load
+
+    function playSong(){
+
+        song.src = songs[currentSong];  //set the source of 0th song
+
+        songTitle.textContent = songs[currentSong]; // set the title of song
+
+        song.play();    // play the song
+    }
+
+    function playOrPauseSong(){
+
+        if(song.paused){
+            song.play();
+            $("#play img").attr("src","muziekplayericons/Pause.png");
+        }
+        else{
+            song.pause();
+            $("#play img").attr("src","muziekplayericons/Play.png");
+        }
+    }
+
+    song.addEventListener('timeupdate',function(){
+
+        var position = song.currentTime / song.duration;
+
+        fillBar.style.width = position * 100 +'%';
+    });
+
+
+    function next(){
+
+        currentSong++;
+        if(currentSong > 2){
+            currentSong = 0;
+        }
+        playSong();
+        $("#play img").attr("src","muziekplayericons/Pause.png");
+        $("#image img").attr("src",poster[currentSong]);
+        $("#bg img").attr("src",poster[currentSong]);
+    }
+
+    function pre(){
+
+        currentSong--;
+        if(currentSong < 0){
+            currentSong = 2;
+        }
+        playSong();
+        $("#play img").attr("src","muziekplayericons/Pause.png");
+        $("#image img").attr("src",poster[currentSong]);
+        $("#bg img").attr("src",poster[currentSong]);
+    }
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>
